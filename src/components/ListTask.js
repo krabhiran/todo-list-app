@@ -86,6 +86,7 @@ function Row(props) {
     const [showEditDialog, setShowEditDialog] = useState(false);
 
     const openEditAlertHandler = (value) => { props.setOpenEditAlert(value); }
+    const openEmptyEditAlertHandler = (value) => { props.setOpenEmptyEditAlert(value); };
 
     const taskDetailsEditPassHandler = (data) => { props.taskDataRowEdit(data); }
 
@@ -171,7 +172,7 @@ function Row(props) {
 
 
             {showViewDialog && < FormTask actionType={'view'} taskItem={row} setShowViewDialog={setShowViewDialog} />}
-            {showEditDialog && < FormTask actionType={'edit'} taskItem={row} setShowEditDialog={setShowEditDialog} openEditAlertHandler={openEditAlertHandler} taskDetailsEditPassHandler={taskDetailsEditPassHandler} />}
+            {showEditDialog && < FormTask actionType={'edit'} taskItem={row} setShowEditDialog={setShowEditDialog} openEditAlertHandler={openEditAlertHandler} openEmptyEditAlertHandler={openEmptyEditAlertHandler} taskDetailsEditPassHandler={taskDetailsEditPassHandler} />}
 
         </React.Fragment >
     );
@@ -182,6 +183,7 @@ const ListTask = (props) => {
     const { taskData } = props;
 
     const [openEditAlert, setOpenEditAlert] = useState(false);
+    const [openEmptyEditAlert, setOpenEmptyEditAlert] = useState(false);
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -232,7 +234,7 @@ const ListTask = (props) => {
                             </TableHead>
                             <TableBody>
                                 {taskData && taskData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                    <Row key={row.id} row={row} setOpenEditAlert={setOpenEditAlert} taskDataRowEdit={taskDataRowEdit} />
+                                    <Row key={row.id} row={row} setOpenEditAlert={setOpenEditAlert} setOpenEmptyEditAlert={setOpenEmptyEditAlert} taskDataRowEdit={taskDataRowEdit} />
                                 ))}
                             </TableBody>
                         </Table>
@@ -250,6 +252,11 @@ const ListTask = (props) => {
                 <Snackbar open={openEditAlert} autoHideDuration={2500} onClose={() => setOpenEditAlert(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
                     <Alert onClose={() => setOpenEditAlert(false)} severity="success" sx={{ width: '100%' }}>
                         Task updated successfully
+                    </Alert>
+                </Snackbar>
+                <Snackbar open={openEmptyEditAlert} autoHideDuration={2500} onClose={() => setOpenEmptyEditAlert(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                    <Alert onClose={() => setOpenEmptyEditAlert(false)} severity="error" sx={{ width: '100%' }}>
+                        Please check the required fields
                     </Alert>
                 </Snackbar>
             </Container>

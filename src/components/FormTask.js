@@ -74,7 +74,7 @@ const FormTask = (props) => {
 
     const [open, setOpen] = useState(true);
 
-    const [openEmptyAlert, setOpenEmptyAlert] = useState(false);
+    const [openEmptyCreateAlert, setOpenEmptyCreateAlert] = useState(false);
 
     const handleClose = () => {
         setOpen(false);
@@ -154,7 +154,7 @@ const FormTask = (props) => {
             props.setShowCreateDialog(false);
         }
         else {
-            setOpenEmptyAlert(true);
+            setOpenEmptyCreateAlert(true);
         }
     }
 
@@ -173,12 +173,12 @@ const FormTask = (props) => {
             props.setShowEditDialog(false);
         }
         else {
-            setOpenEmptyAlert(true);
+            props.openEmptyEditAlertHandler(true);
         }
     }
 
     useEffect(() => {
-        if (props.actionType != "create") {
+        if (props.actionType !== "create") {
             const elementData = props.taskItem;
             setFormData({
                 title: elementData.title,
@@ -189,7 +189,7 @@ const FormTask = (props) => {
                 description: elementData.description
             });
         }
-    }, []);
+    }, [props.actionType, props.taskItem]);
 
     return (
         <>
@@ -318,7 +318,7 @@ const FormTask = (props) => {
                         Cancel
                     </Button>
 
-                    {(props.actionType != "view") && <>
+                    {(props.actionType !== "view") && <>
                         {(props.actionType === "edit") &&
                             <Button variant="contained" size="small" color="warning" endIcon={<UpdateIcon />} onClick={taskUpdateHandler}>
                                 Update
@@ -336,8 +336,8 @@ const FormTask = (props) => {
 
             </BootstrapDialog >
 
-            <Snackbar open={openEmptyAlert} autoHideDuration={2500} onClose={() => setOpenEmptyAlert(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-                <Alert onClose={() => setOpenEmptyAlert(false)} severity="error" sx={{ width: '100%' }}>
+            <Snackbar open={openEmptyCreateAlert} autoHideDuration={2500} onClose={() => setOpenEmptyCreateAlert(false)} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                <Alert onClose={() => setOpenEmptyCreateAlert(false)} severity="error" sx={{ width: '100%' }}>
                     Please check the required fields
                 </Alert>
             </Snackbar>
